@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import { BUTTON_CONTAINER_WIDTH } from '../constants';
 
 
@@ -14,12 +14,15 @@ export const HiddenButton = ({ children, onPress }: HiddenButtonProps) => {
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={{
-                // backgroundColor: '#F9F',
-                width: BUTTON_CONTAINER_WIDTH,
-                overflow:'hidden'
-            }}>
+            style={styles.container}>
             {children}
         </TouchableOpacity>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        width: BUTTON_CONTAINER_WIDTH,
+    }
+})

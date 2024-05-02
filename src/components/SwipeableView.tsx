@@ -13,19 +13,19 @@ interface SwipeableViewProps {
     children: ReactNode;
     deleteButton?: ReactNode;
     editButton?: ReactNode;
-    borderRadius?: number,
-    height?: number;
+    height?: number | string;
     swipeable?: boolean,
     swipeableHint?: boolean,
     autoOpened?: boolean,
     bg?: string,
+    width?:number | string,
     onDelete: () => void,
     onEdit: () => void,
 
 }
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, borderRadius = 0, swipeable = true, swipeableHint = true, autoOpened = true, bg = "#FFFFFF", onDelete, onEdit }: SwipeableViewProps) => {
+export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT,width=ITEM_WIDTH, swipeable = true, swipeableHint = true, autoOpened = false, bg = "#FFFFFF", onDelete, onEdit }: SwipeableViewProps) => {
 
     const translateX = useSharedValue(0);
     const context = useSharedValue({ x: 0 });
@@ -125,7 +125,6 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
     useEffect(() => {
         if (autoOpened) {
-            // scrollTo(-BUTTON_CONTAINER_WIDTH);
             if (I18nManager.isRTL) {
                 setTimeout(() => {
                     scrollTo(BUTTON_CONTAINER_WIDTH)
@@ -159,6 +158,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
         <View style={{
             ...styles.mainContainer,
             height: height,
+            width:width,
             backgroundColor: bg
         }}>
             <View style={styles.hiddenView}>
@@ -189,29 +189,19 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
 const styles = StyleSheet.create({
     mainContainer: {
-        // height: ITEM_HEIGHT,
-        width: ITEM_WIDTH,
-        // backgroundColor: 'yellow',
         alignSelf: 'center',
-        // overflow: 'hidden',//no here
         marginTop: 40
     },
     visibleView: {
         flex: 1,
     },
     hiddenView: {
-        // backgroundColor: 'green',
         position: 'absolute',
         height: "100%",
         width: '100%',
         flexDirection: I18nManager.isRTL ? 'row' : 'row-reverse',
-        // width:BUTTON_CONTAINER_WIDTH,
-        // aspectRatio: 1,
         right: 0,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         overflow: 'hidden',
-        // borderRadius:15
     },
 })
 

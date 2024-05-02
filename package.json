@@ -1,12 +1,17 @@
 {
   "name": "react-native-swipeable-container",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A performant interactive swipeable container with fully configurable options 🚀",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": "https://github.com/houssemELbahri/react-native-swipeable-container",
   "author": "Houssem Bahri <elbahri.dev@gmail.com>",
+  "homepage": "https://github.com/houssemELbahri/react-native-swipeable-container",
+  "bugs": {
+    "url": "https://github.com/houssemELbahri/react-native-swipeable-container/issues"
+  },
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.1.0",
