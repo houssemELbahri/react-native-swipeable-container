@@ -20,6 +20,21 @@ Using `Yarn`:
 ```
 $ yarn add react-native-swipeable-container
 ```
+### Dependencies:
+This library needs these dependencies to be installed in your project before you can use it:
+
+Using `npm`:
+
+```
+$ npm install react-native-reanimated react-native-gesture-handler
+```
+
+Using `Yarn`:
+
+```
+$ yarn add react-native-reanimated react-native-gesture-handler
+```
+
 ### Usage 🚀
 Basic usage examples of the library
 
