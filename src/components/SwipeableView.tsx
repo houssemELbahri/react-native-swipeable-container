@@ -19,13 +19,18 @@ interface SwipeableViewProps {
     autoOpened?: boolean,
     bg?: string,
     width?:number | string,
+    borderRadius?:number,
+    marginTop?:number,
+    marginBottom?:number,
+    marginStart?:number,
+    marginEnd?:number,
     onDelete: () => void,
     onEdit: () => void,
 
 }
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT,width=ITEM_WIDTH, swipeable = true, swipeableHint = true, autoOpened = false, bg = "#FFFFFF", onDelete, onEdit }: SwipeableViewProps) => {
+export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT,width=ITEM_WIDTH, swipeable = true, swipeableHint = true, autoOpened = false, bg = "#FFFFFF",borderRadius=0,marginTop=0,marginBottom=0,marginStart=0,marginEnd=0, onDelete, onEdit }: SwipeableViewProps) => {
 
     const translateX = useSharedValue(0);
     const context = useSharedValue({ x: 0 });
@@ -63,11 +68,10 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
         })
         .onUpdate((event) => {
             translateX.value = event.translationX + context.value.x;
-            // translateX.value = isSwipeable ?  Math.min(translateX.value, MAX_RIGHT_TRANSLATION) : 0;
-            const condition1 = Math.max(translateX.value, -MAX_RIGHT_TRANSLATION)
-            const condition2 = Math.min(translateX.value, MAX_RIGHT_TRANSLATION)
-            const mixt = I18nManager.isRTL ? condition1 : condition2;
-            translateX.value = isSwipeable ? mixt : 0
+            const rtlCondition = Math.max(translateX.value, -MAX_RIGHT_TRANSLATION)
+            const ltrCondition = Math.min(translateX.value, MAX_RIGHT_TRANSLATION)
+            const _translate = I18nManager.isRTL ? rtlCondition : ltrCondition;
+            translateX.value = isSwipeable ? _translate : 0
         })
         .onEnd(() => {
             if (I18nManager.isRTL) {
@@ -92,24 +96,24 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                     scrollTo(0)
                 }
                 if (translateX.value >= -70 && translateX.value < -35) {
-                    scrollTo(-70)
+                    scrollTo(-69)
                 }
                 if (translateX.value < -70) {
                     if(length <2 ){
-                        scrollTo(-70)
+                        scrollTo(-69)
                         return 
                     }
                     if (translateX.value >= -105 && translateX.value < -70) {
-                        scrollTo(-70)
+                        scrollTo(-69)
                     }
                     if (translateX.value >= -105 && translateX.value < -70) {
-                        scrollTo(-70)
+                        scrollTo(-69)
                     }
                     if (translateX.value >= -140 && translateX.value < -105) {
-                        scrollTo(-140)
+                        scrollTo(-138)
                     }
                     if (translateX.value < -140) {
-                        scrollTo(-140)
+                        scrollTo(-138)
                     }
                 }
 
@@ -156,12 +160,15 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
     return (
         <View style={{
-            ...styles.mainContainer,
             height: height,
             width:width,
-            backgroundColor: bg
+            backgroundColor: bg,
+            marginTop,
+            marginBottom,
+            marginStart,
+            marginEnd,
         }}>
-            <View style={styles.hiddenView}>
+            <View style={{...styles.hiddenView,borderRadius}}>
                 {deleteButton &&
                     <HiddenButton
                         onPress={onDelete}
@@ -178,7 +185,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                 }
             </View>
             <GestureDetector gesture={gesture}>
-                <Animated.View style={[styles.visibleView, reanimatedstyle]}>
+                <Animated.View style={[styles.visibleView,{borderRadius}, reanimatedstyle]}>
                     {children}
                 </Animated.View>
             </GestureDetector>
@@ -188,12 +195,9 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        alignSelf: 'center',
-        marginTop: 40
-    },
     visibleView: {
         flex: 1,
+        overflow:'hidden'
     },
     hiddenView: {
         position: 'absolute',
@@ -205,149 +209,3 @@ const styles = StyleSheet.create({
     },
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const MODAL_HEIGHT = 175;
-
-
-
-{/* <ConfirmationModal
-                isVisible={isOpened}
-                onDelete={onDelete}
-                onEdit={onEdit}
-                onClose={closeModal}
-            /> */}
-
-// interface ModalContainerProps {
-//     isVisible: boolean,
-//     onClose: () => void,
-//     onDelete: () => void,
-//     onEdit: () => void,
-// }
-
-// export const ConfirmationModal = ({ isVisible, onClose, onDelete, onEdit }: ModalContainerProps) => {
-
-//     const translateY = useSharedValue(MODAL_HEIGHT - 30);
-//     const opacity = useSharedValue(0);
-
-
-//     const reanimatedStyle = useAnimatedStyle(() => {
-//         return {
-//             transform: [{ translateY: translateY.value }],
-//             opacity: opacity.value
-//         }
-//     })
-
-//     const scrollTo = useCallback((destination: number) => {
-//         'worklet';
-//         translateY.value = withSpring(destination, { damping: 50 })
-//     }, [])
-
-//     useEffect(() => {
-//         scrollTo(0)
-//         opacity.value = withTiming(1)
-//     }, [])
-
-
-
-//     return (
-//         <Modal
-//             visible={isVisible}
-//             transparent
-//             animationType='none'
-//         >
-//             <Animated.View style={[styles2.fullScreen]}>
-//                 <Animated.View style={[styles2.container, reanimatedStyle]}
-//                 // layout={EntryExitTransition}
-//                 // entering={ZoomIn.duration(500)}
-//                 // exiting={ZoomOut.duration(500)}
-//                 >
-//                     <TouchableOpacity
-//                         onPress={onDelete}
-//                     >
-//                         <Text style={{ fontSize: 22, fontWeight: '700', fontFamily: 'DM Sans' }}>Confirmer</Text>
-//                     </TouchableOpacity>
-//                     <TouchableOpacity
-//                         onPress={onClose}
-//                     >
-//                         <Text style={{ fontSize: 22, fontWeight: '700', fontFamily: 'DM Sans' }}>Cancel</Text>
-//                     </TouchableOpacity>
-//                 </Animated.View>
-//             </Animated.View>
-//         </Modal>
-//     )
-// }
-
-// const styles2 = StyleSheet.create({
-//     fullScreen: {
-//         flex: 1,
-//         justifyContent: 'flex-end',
-//         alignItems: 'center',
-//         // backgroundColor: 'green'
-//     },
-//     container: {
-//         width: "100%",
-//         height: MODAL_HEIGHT,
-//         // ...padding(24, 24, 24, 24),
-//         // backgroundColor: '#FFFFFF',
-//         backgroundColor: 'red',
-//         borderTopLeftRadius: 15,
-//         borderTopRightRadius: 15,
-//         justifyContent: 'space-evenly',
-//         alignItems: 'center',
-//     },
-//     backgroundCloser: {
-//         backgroundColor: 'rgba(24, 29, 39, 0.1)',
-//         position: 'absolute',
-//         width: '100%',
-//         height: '100%',
-//     }
-// })
-
-
-
-
-
-{/* <View style={styles.hiddenView}>
-                <TouchableWithoutFeedback
-                    onPress={openModal}
-                // onPress={onDelete}
-                >
-                    <Image source={TrashIcon} style={{
-                        width: 24,
-                        height: 24,
-                        tintColor: 'red'
-                    }} />
-                </TouchableWithoutFeedback>
-            </View> */}
-{/* <View style={styles.hiddenView2}>
-                <TouchableWithoutFeedback
-                    onPress={onEdit}
-                >
-                    <Image source={EditIcon} style={{
-                        width: 24,
-                        height: 24,
-                        tintColor: "green"
-                    }} />
-                </TouchableWithoutFeedback>
-            </View> */}
