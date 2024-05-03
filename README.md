@@ -1,9 +1,14 @@
 # react-native-swipeable-container
+
 ## Description
 
 This module includes information on how to animate views in  **React Native** .
 
 The package is compatible with both **Android** and **iOS** .
+
+
+
+<img width="393" src="https://scontent.ftun6-1.fna.fbcdn.net/v/t39.30808-6/438097162_7409974709123093_1011924654253703642_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=NElHCov-3l4Q7kNvgH6UNQ_&_nc_ht=scontent.ftun6-1.fna&oh=00_AfCHM8QyYkfsT4s4h-bU5_f4FWF8pfMRyDOF5-JJox0IGg&oe=663A9446">
 
 
 ## Getting Started
