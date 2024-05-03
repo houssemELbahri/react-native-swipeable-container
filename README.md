@@ -141,3 +141,8 @@ const editAction = () => {
 | `onDelete`                         | callback when user presses delete button .                                                                         |
 | `onEdit`                           | callback when user presses edit button .                                                                           |
 
+
+
+## Support this package!
+
+If you like this package, consider [becoming a sponsor](https://github.com/sponsors/houssemELbahri) 🩷
