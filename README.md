@@ -122,7 +122,7 @@ const editAction = () => {
 
 
 ## Props
-| Prop                               | Description                                                                                                                                                                                                                                                                                                          |
+| Prop                               | Description                                                                                                                                                                                                                                                                                                          
 | -----------------------------------| -------------------------------------------------------------------------------------------------------------------|
 | `children`                         | The content to be rendered inside the SwipeableView.                                                               |  
 | `deleteButton`                     | The content of the delete button.                                                                                  |
@@ -133,5 +133,11 @@ const editAction = () => {
 | `swipeableHint`                    | Boolean indicating if container swipe on the first render .                                                        |
 | `autoOpened`                       | Boolean indicating if modal should be opened automatically.                                                        |
 | `bg`                               | The color of the hidden view.                                                                                      |
+| `borderRadius`                     | Optional. The border radius of the SwipeableView container. Default is 0.                                          |
+| `marginTop`                        | Optional. The margin from the top.                                                                                 |
+| `marginBottom`                     | Optional. The margin from the top. .                                                                               |
+| `marginstart`                      | Optional. The margin from the start (left in LTR, right in RTL).                                                   |
+| `marginEnd`                        | Optional. The margin from the end (right in LTR, left in RTL).                                                     |
 | `onDelete`                         | callback when user presses delete button .                                                                         |
 | `onEdit`                           | callback when user presses edit button .                                                                           |
+
