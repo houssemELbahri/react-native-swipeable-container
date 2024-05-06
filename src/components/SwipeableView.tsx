@@ -35,32 +35,22 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
     const translateX = useSharedValue(0);
     const context = useSharedValue({ x: 0 });
 
-    const length = useMemo(() => {
-        if (deleteButton && editButton) {
-            return 2
-        }
-        if (deleteButton || editButton) {
-            return 1
-        }
-        return 0
-    }, [!!deleteButton,!!editButton])
+    const isSwipeable = (deleteButton || editButton) && swipeable;
 
 
 
+    const buttonsToShow = useMemo(() => {
+        return (deleteButton ? 1 : 0) + (editButton ? 1 : 0);
+      }, [deleteButton, editButton]);
 
-
-
-    const isSwipeable = useMemo(() => {
-        'worklet';
-        const _isSwipeable = swipeable && (!!deleteButton || !!editButton)
-        return _isSwipeable
-    }, [swipeable,!!deleteButton,!!editButton])
 
 
     const scrollTo = useCallback((destination: number) => {
         'worklet';
         translateX.value = withSpring(destination, { damping: 50 })
     }, [])
+
+    
 
     const gesture = Gesture.Pan()
         .onStart(() => {
@@ -99,7 +89,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                     scrollTo(-69)
                 }
                 if (translateX.value < -70) {
-                    if(length <2 ){
+                    if(buttonsToShow <2 ){
                         scrollTo(-69)
                         return 
                     }
