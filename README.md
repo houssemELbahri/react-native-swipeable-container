@@ -131,7 +131,7 @@ const editAction = () => {
 | `width`                            | Optional. Width of the container.                                                                                  |
 | `swipeable`                        | Boolean indicating if the container should be swipeable.                                                           |
 | `swipeableHint`                    | Boolean indicating if container swipe on the first render .                                                        |
-| `swipeToDelete`                    | Optional. Determines whether swiping should trigger the delete action. Default is true .                           |
+| `swipeToDelete`                    | Optional. Determines whether swiping should trigger the delete action. Default is false .                           |
 | `deleteThreshold`                  | Optional. The threshold for triggering delete action when swiping . Default is 210.                                |
 | `autoOpened`                       | Boolean indicating if modal should be opened automatically.                                                        |
 | `bg`                               | The color of the hidden view.                                                                                      |
