@@ -32,7 +32,7 @@ interface SwipeableViewProps {
 
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = true, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit }: SwipeableViewProps) => {
+export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit }: SwipeableViewProps) => {
 
 
     const DELETE_THRESHOLD = swipeToDelete ? Math.max(deleteThreshold, MIN_DELETE_THRESHOLD) : NO_SWIPE_TO_DELETE;
