@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useMemo, ReactNode, } from 'react';
-import { View, StyleSheet, I18nManager } from "react-native";
+import { View, StyleSheet, DimensionValue, I18nManager } from "react-native";
 import { Gesture, GestureDetector, } from 'react-native-gesture-handler';
 import Animated, { Extrapolation, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
 import { BUTTON_CONTAINER_WIDTH, DEFAULT_DELETE_THRESHOLD, ITEM_HEIGHT, ITEM_WIDTH, MAX_OPPOSITE_TRANSLATION, MIN_DELETE_THRESHOLD, NO_SWIPE_TO_DELETE, SCREEN_WIDTH, THRESHOLD_OPACITY, TRANSLATION_HINT } from '../constants';
@@ -12,14 +12,14 @@ interface SwipeableViewProps {
     children: ReactNode;
     deleteButton?: ReactNode;
     editButton?: ReactNode;
-    height?: number | string;
+    height?: DimensionValue;
     swipeable?: boolean,
     swipeableHint?: boolean,
     swipeToDelete?: boolean,
     deleteThreshold?: number,
     autoOpened?: boolean,
     bg?: string,
-    width?: number | string,
+    width?: DimensionValue,
     borderRadius?: number,
     marginTop?: number,
     marginBottom?: number,
@@ -38,6 +38,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
     const DELETE_THRESHOLD = swipeToDelete ? Math.max(deleteThreshold, MIN_DELETE_THRESHOLD) : NO_SWIPE_TO_DELETE;
 
     const containerHeight = useSharedValue(height);
+    const containerMargin = useSharedValue({ top: marginTop, bottom: marginBottom, start: marginStart, end: marginEnd });
     const translateX = useSharedValue(0);
     const context = useSharedValue({ x: 0 });
 
@@ -63,6 +64,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
     const swipeTillDelete = useCallback(() => {
         'worklet';
         scrollTo(I18nManager.isRTL ? SCREEN_WIDTH : -SCREEN_WIDTH);
+        containerMargin.value = withTiming({ top: 0, bottom: 0, start: 0, end: 0 })
         containerHeight.value = withTiming(0, undefined, (isFinished) => {
             if (isFinished && onDelete) {
                 runOnJS(onDelete)()
@@ -151,7 +153,11 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
         const ltrOpacity = !I18nManager.isRTL && translateX.value < -THRESHOLD_OPACITY
         return {
             height: containerHeight.value,
-            opacity: withTiming((rtlOpacity || ltrOpacity) ? 0 : 1)
+            opacity: withTiming((rtlOpacity || ltrOpacity) ? 0 : 1),
+            marginTop:containerMargin.value.top,
+            marginBottom:containerMargin.value.bottom,
+            marginStart:containerMargin.value.start,
+            marginEnd:containerMargin.value.end,
         }
     })
 
@@ -206,11 +212,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
             style={[reanimatedContainerstyle, {
                 width: width,
                 backgroundColor: bg,
-                marginTop,
-                marginBottom,
-                marginStart,
-                marginEnd,
-                alignSelf: 'center'//to delete befor pushing
+                borderRadius,
             }]}>
             <View style={{ ...styles.hiddenView, borderRadius }}>
                 {deleteButton &&
@@ -249,8 +251,8 @@ const styles = StyleSheet.create({
         height: "100%",
         width: '100%',
         flexDirection: I18nManager.isRTL ? 'row' : 'row-reverse',
-        right: 0,
         overflow: 'hidden',
+        right: 0,
     },
 })
 
