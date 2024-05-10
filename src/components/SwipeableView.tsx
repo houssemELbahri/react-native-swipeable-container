@@ -217,7 +217,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
             <View style={{ ...styles.hiddenView, borderRadius }}>
                 {deleteButton &&
                     <HiddenButton
-                        onPress={onDelete}
+                        onPress={swipeTillDelete}
                     >
                         {deleteButton}
                     </HiddenButton>
