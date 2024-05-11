@@ -27,20 +27,21 @@ interface SwipeableViewProps {
     marginEnd?: number,
     onDelete: () => void,
     onEdit: () => void,
-
 }
 
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit }: SwipeableViewProps) => {
+export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit, }: SwipeableViewProps) => {
 
 
     const DELETE_THRESHOLD = swipeToDelete ? Math.max(deleteThreshold, MIN_DELETE_THRESHOLD) : NO_SWIPE_TO_DELETE;
 
-    const containerHeight = useSharedValue(height);
-    const containerMargin = useSharedValue({ top: marginTop, bottom: marginBottom, start: marginStart, end: marginEnd });
     const translateX = useSharedValue(0);
     const context = useSharedValue({ x: 0 });
+    const containerHeight = useSharedValue(height);
+    const containerMargin = useSharedValue({ top: marginTop, bottom: marginBottom, start: marginStart, end: marginEnd });
+    const initialTouchLocation = useSharedValue<{ x: number, y: number } | null>(null);
+
 
     const isSwipeable = useMemo(() => {
         const _isSwipeable = (deleteButton || editButton) && swipeable;
@@ -74,7 +75,27 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
 
 
-    const gesture = Gesture.Pan()
+    const panGesture = Gesture.Pan()
+        .manualActivation(true)
+        .onBegin((evt) => {
+            initialTouchLocation.value = { x: evt.x, y: evt.y };
+        })
+        .onTouchesMove((evt, state) => {
+            if (!initialTouchLocation.value || !evt.changedTouches.length) {
+                state.fail();
+                return;
+            }
+
+            const xDiff = Math.abs(evt.changedTouches[0].x - initialTouchLocation.value.x);
+            const yDiff = Math.abs(evt.changedTouches[0].y - initialTouchLocation.value.y);
+            const isHorizontalPanning = xDiff > yDiff;
+
+            if (isHorizontalPanning) {
+                state.activate();
+            } else {
+                state.fail();
+            }
+        })
         .onStart(() => {
             context.value = { x: translateX.value }
         })
@@ -147,17 +168,16 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
         })
 
 
-
     const reanimatedContainerstyle = useAnimatedStyle(() => {
         const rtlOpacity = I18nManager.isRTL && translateX.value > THRESHOLD_OPACITY
         const ltrOpacity = !I18nManager.isRTL && translateX.value < -THRESHOLD_OPACITY
         return {
             height: containerHeight.value,
             opacity: withTiming((rtlOpacity || ltrOpacity) ? 0 : 1),
-            marginTop:containerMargin.value.top,
-            marginBottom:containerMargin.value.bottom,
-            marginStart:containerMargin.value.start,
-            marginEnd:containerMargin.value.end,
+            marginTop: containerMargin.value.top,
+            marginBottom: containerMargin.value.bottom,
+            marginStart: containerMargin.value.start,
+            marginEnd: containerMargin.value.end,
         }
     })
 
@@ -173,6 +193,8 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
             borderRadius: borderRadiusAnimated
         }
     })
+
+
 
 
 
@@ -230,7 +252,9 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                     </HiddenButton>
                 }
             </View>
-            <GestureDetector gesture={gesture}>
+            <GestureDetector
+                gesture={panGesture}
+            >
                 <Animated.View style={[styles.visibleView, { borderRadius }, reanimatedVisibleViewStyle]}>
                     {children}
                 </Animated.View>
@@ -244,7 +268,7 @@ const styles = StyleSheet.create({
     visibleView: {
         flex: 1,
         overflow: 'hidden',
-        backgroundColor: "#FFFFFF"
+        backgroundColor: "#FFFFFF",
     },
     hiddenView: {
         position: 'absolute',
@@ -255,6 +279,4 @@ const styles = StyleSheet.create({
         right: 0,
     },
 })
-
-
 
