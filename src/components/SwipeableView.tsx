@@ -199,6 +199,10 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
 
     useEffect(() => {
+        if(!isSwipeable){
+            scrollTo(0)
+            return
+        }
         if (autoOpened) {
             if (I18nManager.isRTL) {
                 setTimeout(() => {
@@ -213,7 +217,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                 return
             }
         }
-        if (isSwipeable && swipeableHint) {
+        if (swipeableHint) {
             if (I18nManager.isRTL) {
                 scrollTo(TRANSLATION_HINT)
                 setTimeout(() => {
