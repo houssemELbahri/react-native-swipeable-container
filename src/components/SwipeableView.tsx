@@ -272,7 +272,6 @@ const styles = StyleSheet.create({
     visibleView: {
         flex: 1,
         overflow: 'hidden',
-        backgroundColor: "#FFFFFF",
     },
     hiddenView: {
         position: 'absolute',
