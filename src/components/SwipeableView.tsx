@@ -71,7 +71,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
                 runOnJS(onDelete)()
             }
         })
-    }, [])
+    }, [onDelete])
 
 
 
