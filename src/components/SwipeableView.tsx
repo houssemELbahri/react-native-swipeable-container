@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo, ReactNode, } from 'react';
+import React, { useEffect, useCallback, useMemo, ReactNode, forwardRef, useImperativeHandle, } from 'react';
 import { View, StyleSheet, DimensionValue, I18nManager } from "react-native";
 import { Gesture, GestureDetector, } from 'react-native-gesture-handler';
 import Animated, { Extrapolation, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
@@ -8,7 +8,7 @@ import { HiddenButton } from './HiddenButton';
 
 
 
-interface SwipeableViewProps {
+export interface SwipeableViewProps {
     children: ReactNode;
     deleteButton?: ReactNode;
     editButton?: ReactNode;
@@ -27,11 +27,39 @@ interface SwipeableViewProps {
     marginEnd?: number,
     onDelete: () => void,
     onEdit: () => void,
+    onOpen?: () => void,
+}
+
+
+export type SwipeableViewRef = {
+    onClose: () => void,
+    isOpened: () => boolean,
 }
 
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit, }: SwipeableViewProps) => {
+export const SwipeableView = forwardRef<SwipeableViewRef, SwipeableViewProps>((
+    {
+        children,
+        deleteButton,
+        editButton,
+        height = ITEM_HEIGHT,
+        width = ITEM_WIDTH,
+        swipeable = true,
+        swipeableHint = true,
+        swipeToDelete = false,
+        deleteThreshold = DEFAULT_DELETE_THRESHOLD,
+        autoOpened = false,
+        bg = "#FFFFFF",
+        borderRadius = 0,
+        marginTop = 0,
+        marginBottom = 0,
+        marginStart = 0,
+        marginEnd = 0,
+        onDelete,
+        onEdit,
+        onOpen
+    }, ref) => {
 
 
     const DELETE_THRESHOLD = swipeToDelete ? Math.max(deleteThreshold, MIN_DELETE_THRESHOLD) : NO_SWIPE_TO_DELETE;
@@ -41,6 +69,22 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
     const containerHeight = useSharedValue(height);
     const containerMargin = useSharedValue({ top: marginTop, bottom: marginBottom, start: marginStart, end: marginEnd });
     const initialTouchLocation = useSharedValue<{ x: number, y: number } | null>(null);
+    const opened = useSharedValue(false);
+
+
+    const onOpenHandler = useCallback(() => {
+        'worklet';
+        if (onOpen) {
+            runOnJS(onOpen)()
+        }
+    }, [])
+
+    const swipeToClose = useCallback(() => {
+        scrollTo(0)
+    }, [])
+
+
+    
 
 
     const isSwipeable = useMemo(() => {
@@ -58,8 +102,20 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
     const scrollTo = useCallback((destination: number) => {
         'worklet';
+        opened.value =  destination !== 0;
         translateX.value = withSpring(destination, { damping: 50 })
     }, [])
+
+
+    const isOpened = useCallback(()=> {
+        return opened.value
+    },[])
+
+
+    useImperativeHandle(ref, () => {
+        return { onClose: swipeToClose,isOpened}
+    }, [scrollTo,isOpened])
+
 
 
     const swipeTillDelete = useCallback(() => {
@@ -98,6 +154,9 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
         })
         .onStart(() => {
             context.value = { x: translateX.value }
+            if (!opened.value) {
+                onOpenHandler()
+            }
         })
         .onUpdate((event) => {
             translateX.value = event.translationX + context.value.x;
@@ -199,7 +258,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
 
 
     useEffect(() => {
-        if(!isSwipeable){
+        if (!isSwipeable) {
             scrollTo(0)
             return
         }
@@ -265,7 +324,7 @@ export const SwipeableView = ({ children, deleteButton, editButton, height = ITE
             </GestureDetector>
         </Animated.View>
     )
-}
+})
 
 
 const styles = StyleSheet.create({

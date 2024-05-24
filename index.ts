@@ -1,4 +1,5 @@
-import { SwipeableView } from "./src/components/SwipeableView";
+import { SwipeableView,SwipeableViewRef,SwipeableViewProps } from "./src/components/SwipeableView";
 
 
 export  { SwipeableView } 
+export type { SwipeableViewRef, SwipeableViewProps }
