@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useMemo, ReactNode, } from 'react';
 import { View, StyleSheet, DimensionValue, I18nManager } from "react-native";
 import { Gesture, GestureDetector, } from 'react-native-gesture-handler';
 import Animated, { Extrapolation, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming, } from 'react-native-reanimated';
-import { BUTTON_CONTAINER_WIDTH, DEFAULT_DELETE_THRESHOLD, ITEM_HEIGHT, ITEM_WIDTH, MAX_OPPOSITE_TRANSLATION, MIN_DELETE_THRESHOLD, NO_SWIPE_TO_DELETE, SCREEN_WIDTH, THRESHOLD_OPACITY, TRANSLATION_HINT } from '../constants';
+import { BUTTON_CONTAINER_WIDTH, DEFAULT_DELETE_THRESHOLD, DEFAULT_ITEM_HEIGHT, ITEM_WIDTH, MAX_OPPOSITE_TRANSLATION, MIN_DELETE_THRESHOLD, NO_SWIPE_TO_DELETE, SCREEN_WIDTH, THRESHOLD_OPACITY, TRANSLATION_HINT } from '../constants';
 import { HiddenButton } from './HiddenButton';
 
 
@@ -31,7 +31,7 @@ interface SwipeableViewProps {
 
 
 
-export const SwipeableView = ({ children, deleteButton, editButton, height = ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit, }: SwipeableViewProps) => {
+export const SwipeableView = ({ children, deleteButton, editButton, height = DEFAULT_ITEM_HEIGHT, width = ITEM_WIDTH, swipeable = true, swipeableHint = true, swipeToDelete = false, deleteThreshold = DEFAULT_DELETE_THRESHOLD, autoOpened = false, bg = "#FFFFFF", borderRadius = 0, marginTop = 0, marginBottom = 0, marginStart = 0, marginEnd = 0, onDelete, onEdit, }: SwipeableViewProps) => {
 
 
     const DELETE_THRESHOLD = swipeToDelete ? Math.max(deleteThreshold, MIN_DELETE_THRESHOLD) : NO_SWIPE_TO_DELETE;

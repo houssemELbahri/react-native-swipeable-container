@@ -3,7 +3,7 @@ import { Dimensions } from "react-native"
 export const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
 
-export const ITEM_HEIGHT = 70;
+export const DEFAULT_ITEM_HEIGHT = 'auto';
 export const ITEM_WIDTH = 370;
 export const BUTTON_CONTAINER_WIDTH = 70;
 export const TRANSLATION_HINT = 35;
