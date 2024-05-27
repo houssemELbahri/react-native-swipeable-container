@@ -146,7 +146,7 @@ export const SwipeableView = forwardRef<SwipeableViewRef, SwipeableViewProps>((
             const yDiff = Math.abs(evt.changedTouches[0].y - initialTouchLocation.value.y);
             const isHorizontalPanning = xDiff > yDiff;
 
-            if (isHorizontalPanning) {
+            if (isHorizontalPanning && isSwipeable) {
                 state.activate();
             } else {
                 state.fail();
