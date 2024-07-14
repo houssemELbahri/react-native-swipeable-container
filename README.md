@@ -8,7 +8,8 @@ The package is compatible with both **Android** and **iOS** .
 
 
 
-<img width="393" src="https://scontent.ftun7-1.fna.fbcdn.net/v/t39.30808-6/449107960_7671687569618471_208750650824172417_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=w8yzK6S4hwsQ7kNvgFcBnnV&_nc_ht=scontent.ftun7-1.fna&oh=00_AYC0muPn4xl-e95E59YTlnbEnz-PIlGESnvexs2ej-2mUg&oe=66831A44">
+<img width="393" src="https://github.com/houssemELbahri/BeeBus/blob/main/src/assets/images/SimulatorIPhone15.png">
+
 
 
 ## Getting Started
