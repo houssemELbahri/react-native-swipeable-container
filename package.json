@@ -1,6 +1,6 @@
 {
   "name": "react-native-swipeable-container",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A performant interactive swipeable container with fully configurable options 🚀",
   "main": "index.ts",
   "keywords": [
