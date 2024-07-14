@@ -8,7 +8,7 @@ The package is compatible with both **Android** and **iOS** .
 
 
 
-<img width="393" src="https://github.com/houssemELbahri/BeeBus/blob/main/src/assets/images/SimulatorIPhone15.png">
+<img width="393" src="https://github.com/houssemELbahri/madeInQatar/blob/main/src/DATA/Simulator%20Screenshot%20-%20iPhone%2015%20-%202024-05-03%20at%2012.20.42.png">
 
 
 
